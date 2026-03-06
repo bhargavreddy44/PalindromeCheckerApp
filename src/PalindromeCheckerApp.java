@@ -1,24 +1,92 @@
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
-    public static void main(String[] args) {
 
-        System.out.println("=================================");
-        System.out.println("   Welcome to Palindrome App   ");
-        System.out.println("=================================");
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    static Node head = null;
+
+    public static void insert(char data) {
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+
+        Node temp = head;
+
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+
+        temp.next = newNode;
+    }
+
+    public static Node reverse(Node node) {
+        Node prev = null;
+        Node current = node;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+
+    public static boolean isPalindrome() {
+
+        if (head == null || head.next == null)
+            return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
+
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data)
+                return false;
+
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter a word: ");
-        String word = sc.nextLine();
+        System.out.println("Enter a string:");
+        String str = sc.nextLine();
 
-        String reversed = new StringBuilder(word).reverse().toString();
-
-        if(word.equalsIgnoreCase(reversed)) {
-            System.out.println(word + " is a Palindrome");
-        } else {
-            System.out.println(word + " is NOT a Palindrome");
+        for (int i = 0; i < str.length(); i++) {
+            insert(str.charAt(i));
         }
+
+        if (isPalindrome())
+            System.out.println("Palindrome");
+        else
+            System.out.println("Not Palindrome");
 
         sc.close();
     }
