@@ -1,26 +1,36 @@
 import java.util.Scanner;
 
-public class PalindromeCheckerApp {
+class PalindromeChecker {
 
-    public static boolean isPalindrome(String str, int start, int end) {
+    public boolean checkPalindrome(String str) {
 
-        if (start >= end)
-            return true;
+        int left = 0;
+        int right = str.length() - 1;
 
-        if (str.charAt(start) != str.charAt(end))
-            return false;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
 
-        return isPalindrome(str, start + 1, end - 1);
+        return true;
     }
+}
+
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter a string:");
-        String str = sc.nextLine();
+        String input = sc.nextLine();
 
-        if (isPalindrome(str, 0, str.length() - 1))
+        PalindromeChecker checker = new PalindromeChecker();
+
+        if (checker.checkPalindrome(input))
             System.out.println("Palindrome");
         else
             System.out.println("Not Palindrome");
